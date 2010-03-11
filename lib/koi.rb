@@ -52,7 +52,7 @@ module Koi
     Commands = [
       :init, :add, :list, :tag,
       :done, :did, :log, :status,
-      :remove, :float, :sink,
+      :stat, :remove, :float, :sink,
       :ls, :rm, :rise, :x, :show
     ]
     Initializers = [:init, :add]
@@ -114,7 +114,8 @@ module Koi
 
       true
     end
-
+    alias :stat status
+    
     def show tags = []
       tags = [tags].flatten
       self.list @db.select {|e| (tags & e[:tags]).any? }
