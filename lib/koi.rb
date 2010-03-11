@@ -151,6 +151,14 @@ module Koi
       @db.insert([[v, 0].max, @db.size].min, entry)
     end
 
+    def reorder(entry, n)
+      entry = @db.find(entry)
+      diff = n - @db.index(entry)
+      v = @db.index(entry) + @db.size / 3 * diff
+      @db.delete entry
+      @db.insert([[v, 0].max, @db.size].min, entry)
+    end
+    
     def rise entry
       swim entry, -1
     end
