@@ -81,7 +81,17 @@ describe Koi do
         Koi.run(:tag, TASKS[1], "food")
         @db.load.find(TASKS[1])[:tags].should include("food")
       end
-
+      
+      it "should reorder tasks up" do
+        Koi.run(:reorder, TASKS[2], 0)
+        @db.load[0][:title].should == TASKS[2]
+      end
+      
+      it "should reorder tasks down" do
+        Koi.run(:reorder, TASKS[0], 2)
+        @db.load[2][:title].should == TASKS[0]
+      end
+      
       it "should rise tasks" do
         Koi.run(:rise, TASKS[2])
         @db.load[1][:title].should == TASKS[2]

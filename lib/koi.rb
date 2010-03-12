@@ -53,7 +53,8 @@ module Koi
       :init, :add, :list, :tag,
       :done, :did, :log, :status,
       :stat, :remove, :float, :sink,
-      :ls, :rm, :rise, :x, :show
+      :ls, :rm, :rise, :x, :show,
+      :reorder
     ]
     Initializers = [:init, :add]
     Special = {"!" => :done, "?" => :status, "+" => :float}
@@ -152,11 +153,9 @@ module Koi
     end
 
     def reorder(entry, n)
-      entry = @db.find(entry)
-      diff = n - @db.index(entry)
-      v = @db.index(entry) + @db.size / 3 * diff
-      @db.delete entry
-      @db.insert([[v, 0].max, @db.size].min, entry)
+      @entry = @db.find(entry)
+      diff = n - @db.index(@entry)
+      swim entry, diff
     end
     
     def rise entry
@@ -199,7 +198,7 @@ module Koi
 
     def err str
       @options[:silent] ? abort : abort(str)
-    end
+    end 
 
     def add entry, *args
       Koi.init
